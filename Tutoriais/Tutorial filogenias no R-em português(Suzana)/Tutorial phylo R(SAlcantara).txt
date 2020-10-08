@@ -1,0 +1,361 @@
+#Baixar e abrir versão mais atual do R
+#checar e escolher diretório (se não acessível via aba superior):
+getwd() ###retorna o diretório que está sendo utilizado
+setwd("~/Desktop/XXXXX") #"~/Desktop/XXXXX":caminho que determina o diretório que será utilizado (no caso, uma pasta chamada XXXXX que está no Desktop)
+getwd()
+
+#Baixar pacotes que vão ser utilizados e dependentes:
+>library(xx) #checa se já existe o pacote xx
+
+#melhor opção: escolha opção "Package installer" na aba superior "Packages & Data" e selecione o pacote
+#sempre escolha "Install Dependencies"!!!!!!
+
+>library(xx) #abre o pacote para uso
+
+#Lista de programas que serão/poderão ser usados na disciplina:
+ade4
+ape
+geiger
+diversitree
+picante
+phyloclim
+vegan
+foreign
+nlme
+BAMMtools
+phytools
+
+#Listas importantes e sempre atualizadas:
+#https://cran.r-project.org/web/views/Phylogenetics.html #análises filogenéticas comparativas
+
+#para arquivos de texto, utilize o programa TextWrangler
+#de preferência, salve os dados originais (planilhas de excel) em formato .csv (sem fórmulas ou caracteres especiais, use . para casa decimais)
+
+#PRIMEIRA LIÇÃO:
+#usar R como calculadora
+#estabelecer valores às variáveis
+#uma variável simples é um vetor, que pode ter 1 item (um único valor) ou uma série de valores
+#vetores podem ser combinados e formarem matrizes, tabela de dados, listas, etc.
+#em linguagem R, todos esses objetos têm formatos (classes) específicas
+#aprender a utilizar variáveis e vetores
+#pare nomear/criar objetos:
+nn <- 15 #ou
+nn = 15
+
+#para ver objetos existentes e abertos na área de trabalho:
+ls()
+objects()
+
+#para ver detalhes dos objetos:
+ls.str()
+str(nn) #ou attributes()
+
+#tipos de objetos no R: vectors, factors, matrices, data.frames & lists
+#todos os objetos têm atributos e valores
+#para saber o tipo de objeto (oo):
+is.vector(oo)
+is.factor(oo)
+is.matrix(oo)
+is.data.frame(oo)
+is.list(oo)
+
+#para saber a classe dos objetos (numérico ou categórico):
+class(oo)
+
+#Vector = série de elementos do mesmo tipo. Tem dois atributos: modo & comprimento:
+x <- c(1:10)
+mode()
+length()
+#alguns vetores e outros objetos podem ter um terceiro atributo: nome (ex.: vetores filogenéticos)
+
+#para ter acesso a um elemento individual em um vetor (utilizando o index numérico desse elemento):
+xx[3]
+yy[c(1:3)] #série de elementos da posição 1 até a posição 3
+yy[c(1,3)] #elementos da posição 1 e da posição 3
+zz[c(1:3, 5)] #série de elementos da posição 1 até a posição 3 + o elemento na posição 5
+###a letra c nos comandos acima é equivalente à coluna de posição do elemento no vetor (pensando numa planilha)
+
+#Factors = formas compactas de lidar com dados categóricos (não-numéricos)
+#Um fator sempre deriva de um vetor, mas tem um atributo adicional que é o nível (level):
+###classe importante de objeto para taxonomistas!!!!!!!
+ff <- c(0,0,1,1,1)
+ff <- factor(ff)
+levels(ff) <- c("Male","Female")
+#para checar os níveis dos fatores:
+levels(ff)
+str(ff)
+
+#matrix = um vetor arranjado de maneira tabular (matricial). Tem o atributo adicional dim (dimensão):
+X <- matrix(1:9, 3, 3)
+X
+#mesmo resultado (em colunas):
+X <- 1:9
+dim(X) <- c(3,3)
+#se quiser em linhas:
+X <- matrix(1:9, 3, 3, byrow=TRUE)
+
+#ver index numéricos de matrizes:
+X[3,2]
+X[ ,3]
+X[2, ]
+
+#data frame = parece uma matriz mas é "guardado" como listas.
+#tipo de objeto criado quando lemos informações em planilhas a partir de um arquivo (txt, csv, etc.)
+Y <- data.frame(zz, y=1:5, x=5:1)
+Y
+Y$zz
+Y$y
+
+#list = é a estrutura de dados mais geral, é um objeto que consiste de um coleção de objetos ordenados
+#(=componentes). Componentes não precisam ser do mesmo modo ou tipo: uma lista pode consistir de
+#um vetor numérico, um valor lógico, uma matriz, uma função e mesmo uma árvore filogenética (todos no mesmo objeto):
+L <- list(zz=zz, 1:2, Y)
+length(L)
+names(L)
+#para ver componentes de uma lista:
+L[[1]]
+L$z
+
+
+#SEGUNDA LIÇÃO:
+#aprender diferentes formatos de objetos e funções no R
+#aprender a gerar distribuições de dados (útil para entender teste de hipóteses)
+#aprender a ler & salvar arquivos
+
+#para um preview dos dados antes de ler os mesmos dentro do R = readLines():
+cat(readLines("~/Desktop/anole.data.csv", 10), sep= "\n")
+
+#read data file (csv):
+anole_data <- read.csv("~/Desktop/anole.data.csv", header=TRUE, row.names=1)
+
+#preview of the data:
+head(anole_data)
+
+#criando um vetor vazio:
+averages <- vector(mode = "numeric", length=ncol(anole_data))
+averages
+
+#usar um loop para dizer ao R calcular a média de cada variável do arquivo anoles (coluna)
+#e guardar a informação no vetor vazio que foi criado
+for (i in 1:ncol(anole_data)) averages[i] <- mean(anole_data[ ,i])
+names(averages) <- colnames(anole_data)
+averages
+
+#outra forma de fazer a mesma coisa (função apply(): faz a mesma função para vários objetos)
+averages <- apply(anole_data, 2, mean)
+averages
+
+#ou use a função específica pra fazer isso (pode não existir, nesse caso existe):
+averages <- colMeans(anole_data)
+averages
+
+#outra maneira de fazer tudo de uma vez só, com a função print:
+averages <- setNames(vector(mode="numeric", length=ncol(anole_data)), colnames(anole_data))
+for (i in 1:ncol(anole_data)){
+averages[i] <- mean(anole_data[,i])
+print(averages[1:i])
+}
+
+#write.table() to save our averages to a file:
+write.table(averages, file = "anole_averages") #no diretório que o R estiver trabalhando
+
+#outros comandos de escrever em arquivos (ver opções para cada um para controle de tamanho de imagens, etc.):
+postscript() #útil para gráficos com qualidade de publicação
+pdf() #resolução completa
+pictex() #LaTeX/PicTex graphics file
+png() #bitmap device–reduz resolução para o tamanho do arquivo salvo
+jpeg()
+bmp()
+7ff()
+xfig()
+
+#após escrever arquivos externos, os external devices devem ser fechados:
+dev.off()
+
+#ex: plot um gráfico com duas variáveis do arquivo anoles em pdf:
+pdf()
+plot(anole_data$SVL, anole_data$HL)
+dev.off()
+
+#TERCEIRA LIÇÃO:
+#Graphical devices (como plotar gráficos-external devices) na tela:
+X11():
+Mac OS X: quartz()
+PC: window()
+
+
+#QUARTA LIÇÃO:
+#aprender a manipular filogenias em R:
+
+#comandos úteis:
+read.tree()
+drop.tip()
+branching.times()
+node.depth()
+cophenetic.phylo()
+vcv()
+write.tree()
+mrca()
+multi2di()
+rotate()
+
+#Plotar:
+plot.phylo()
+add.scale.bar()
+identify.phylo()
+nodelabels()
+subtreeplot()
+which.edge()
+zoom()
+
+####Tutorial filogenias-intro:
+library(ape)
+library(geiger)
+library(phytools)
+#para ver como citar:
+citation()
+citation("geiger")
+
+##ler árvore de uma linha (objeto criado: lista de classe phylo):
+tt="(((((((cow, pig),whale),(bat,(lemur,human))),(robin,iguana)),coelacanth),gold_fish),shark);"
+vert.tree<-read.tree(text=tt)
+
+#plotar em diferentes formatos:
+plot(vert.tree)
+plot(vert.tree,type="cladogram")
+plot(unroot(vert.tree),type="unrooted")
+plot(vert.tree,type="fan")
+
+#objeto de classe phylo tem 4 partes, normalmente "escondidas"
+#(não aparecem quando digitamos o nome do objeto):
+vert.tree
+
+#para ver todas as partes:
+str(vert.tree)
+
+#outro exemplo:
+tree<-read.tree(text="(((A,B),(C,D)),E);")
+plot(tree,type="cladogram",edge.width=2)
+
+#objeto phylo com 3 componentes (=explicados a seguir) e uma classe de atributo (=phylo):
+tree$edge
+
+#A matrix edge contém o começo e o final do número do nó para todos os nós e terminais da filogenia.
+#Por convenção, os terminais da árvore são numerados de 1 ao longo do número n de terminais;
+#e os nós são numerados n:- 1 ao longo do n + m para m nós. m = n - 1 para as árvores totalmente bifurcadas.
+
+tree$tip.label
+#O vetor tip.label contém os labels (=identificações) para todos os terminais na árvore. 
+#A ordem dos tip.label é a ordem dos terminais numerados de 1 a n no vetor edge.
+
+tree$Nnode
+#O numeral Nnode contém o número de nós internos da árvore, incluindo a raiz da árvore.
+
+#para plotar todas as info:
+plot(tree,edge.width=2,label.offset=0.1,type="cladogram")
+nodelabels()
+tiplabels()
+
+# "phylo" tb pode ter outros componentes, os mais comuns são edge.length
+#(um vetor de classe "numeric" contendo todos os comprimentos dos ramos da árvore na mesma ordem 
+#em que as linhas no vetor edge; e root.edge, um valor numerico dando o comprimento do ramo da raiz, se enraizada.
+#Outros elementos & atributos podem ser adicionados para tipos especiais de árvores filogenéticas.
+
+#Escrevendo & lendo árvores filogenéticas:
+write.tree(tree,"example.tre")
+cat(readLines("example.tre"))
+
+#utilizando phytools:
+writeNexus(tree,"example.nex")
+cat(readLines("example.nex"),sep="\n")
+
+#Simulando, plotando, extraindo clados & cortando tips (terminais) das árvores:
+## (escolher o valor de seed para garantir repetibilidade)
+set.seed(1)
+## simular uma árvore com modelo birth-death utilizando phytools
+tree<-pbtree(b=1,d=0.2,n=40)
+##critério de parada é 40 espécies viventes, neste caso:
+plotTree(tree)
+nodelabels()
+
+## ok, agora extraia o clado descendente a partir do nó de número #62
+tt62<-extract.clade(tree,62)
+plotTree(tt62)
+
+##agora exclua 10 terminais da árvore (escolhidos aleatoriamente)
+dtips<-sample(tree$tip.label,10)
+dt<-drop.tip(tree,dtips)
+plotTree(dt)
+
+## tb podemos deletar todos os terminais que foram extintos antes do presente
+## (não é a única maneira de fazer isso):
+plotTree(et<-drop.tip(tree,getExtinct(tree)),cex=0.7)
+
+#Árvores bifurcadas & politômicas
+
+#"ape" e maioria dos programas filogenéticos podem lidar com filogenias que são binárias ou multifurcadas;
+#porém nem todas as funções existentes nesses programas podem fazer isso.
+#Para checar se uma filogenia é binária e converter entre árvores binárias e multifurcadas:
+
+t1<-read.tree(text="((A,B,C),D);")
+plot(t1,type="cladogram")
+
+## checar se binaria
+is.binary.tree(t1)
+
+## resolver politomias aleatoriamente:
+t2<-multi2di(t1)
+plot(t2,type="cladogram")
+
+is.binary.tree(t2)
+
+#Miscellaneous (rotating nodes, re-rooting, etc…):
+## rotacionar nós
+plotTree(tree,node.numbers=T)
+
+## primeiro, rotacionar no nó #50
+rt.50<-rotate(tree,50)
+plotTree(rt.50)
+
+## agora, rotacionar todos os nós
+rt.all<-rotateNodes(tree,"all")
+plotTree(rt.all)
+
+## ok, agora re-enraizar a árvore no nó #67
+rr.67<-root(tree,node=67)
+plotTree(rr.67)
+## isso cria uma trifurcação na raiz
+
+## podemos re-enraizar ao longo de um ramo
+rr.62<-reroot(tree,62,position=0.5*tree$edge.length[which(tree$edge[,2]==62)])
+plotTree(rr.62)
+
+#Comparar árvores:
+## checar se as árvores tree & rt.all são iguais
+all.equal(tree,rt.all)splin
+
+## checar se tree & rr.62 são iguais
+all.equal(tree,rr.62)
+
+## checar se árvore não-enraizada & rr.62 são iguais
+all.equal(unroot(tree),unroot(rr.62))
+
+#Árvores múltiplas: às vezes é útil "guardar" várias filogenias em um único objeto.
+#Por exemplo, conjunto de árvores resultante em uma amostragem posterior de uma filogenia Bayesian 
+#ou se queremos replicar uma análise simulada em um grande número de filogenias.
+#Árvores múltiplas são salvas como objetos de classe “multiPhylo”: uma lista de objetos de class "phylo",
+#com o atributo de classe = "multiPhylo". Muitas, mas não todas as funções em "ape", "phytools", e outros R packages
+#podem ser aplicadas a ambos objetos "phylo" e "multiPhylo":
+
+## simular 10 árvores com modelo pure-birth:
+trees<-pbtree(n=6,nsim=10,scale=1)
+print(trees)
+
+## arredondar o comprimento dos ramos das árvores para 3 dígitos
+trees<-roundBranches(trees,1)
+## escrever (salvar) em um arquivo
+write.tree(trees,file="example.trees")
+cat(readLines("example.trees"),sep="\n")
+
+#blog: http://blog.phytools.org
+#PDF manuals of different R packages such as ape, phytools, phangorn, and geiger
