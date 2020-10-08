@@ -13,9 +13,11 @@ out.width = "100%"
 )
 ```
 
-# Análise Filogenética Comparativa
+# Análises comparativas: evolução, ecologia e conservação
 
-### Disciplina oferecida pelo [PPGFAP-UFSC](https://ppgfap.posgrad.ufsc.br/)
+### FAP410032-41010066DO/ME (20201) - Disciplina oferecida pelo [PPGFAP-UFSC](https://ppgfap.posgrad.ufsc.br/)
+
+Profa. Suzana Alcantara
 
 <!-- badges: start -->
 

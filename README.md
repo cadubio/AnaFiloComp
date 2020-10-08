@@ -1,10 +1,12 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-Análise Filogenética Comparativa
-================================
+Análises comparativas: evolução, ecologia e conservação
+=======================================================
 
-### Disciplina oferecida pelo [PPGFAP-UFSC](https://ppgfap.posgrad.ufsc.br/)
+### FAP410032-41010066DO/ME (20201) - Disciplina oferecida pelo [PPGFAP-UFSC](https://ppgfap.posgrad.ufsc.br/)
+
+Profa. Suzana Alcantara
 
 <!-- badges: start -->
 
@@ -317,7 +319,7 @@ utilizando phytools:
 
     cat(readLines("example1.nex"),sep="\n")
     #> #NEXUS
-    #> [R-package PHYTOOLS, Thu Oct  8 19:18:08 2020]
+    #> [R-package PHYTOOLS, Thu Oct  8 19:25:41 2020]
     #> 
     #> BEGIN TAXA;
     #>  DIMENSIONS NTAX = 5;
