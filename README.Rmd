@@ -13,7 +13,7 @@ out.width = "100%"
 )
 ```
 
-# Análise Filorgenética Comparativa
+# Análise Filogenética Comparativa
 
 ### Disciplina oferecida pelo [PPGFAP-UFSC](https://ppgfap.posgrad.ufsc.br/)
 
@@ -29,7 +29,7 @@ Neste [livro online](https://yulab-smu.top/treedata-book/index.html) se encontra
 
 Os exemplos e tutorias apresentado na disciplina serão convertidos e executados com base neste três pacotes.
 
-1.  Tutoriais/Tutorial filogenias no R-em português(Suzana)/Tutorial phylo R(SAlcantara).txt (as partes de uso básico ao `R` não serão apresentadas aqui)
+1.  Tutoriais/Tutorial filogenias no R-em português(Suzana)/Tutorial phylo R(SAlcantara).txt (as partes de uso básico do `R` não serão apresentadas aqui)
 
     -   Lista de pacotes que serão/poderão ser usados na disciplina:
 

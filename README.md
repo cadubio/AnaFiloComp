@@ -1,8 +1,8 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-Análise Filorgenética Comparativa
-=================================
+Análise Filogenética Comparativa
+================================
 
 ### Disciplina oferecida pelo [PPGFAP-UFSC](https://ppgfap.posgrad.ufsc.br/)
 
@@ -29,7 +29,7 @@ Os exemplos e tutorias apresentado na disciplina serão convertidos e
 executados com base neste três pacotes.
 
 1.  Tutoriais/Tutorial filogenias no R-em português(Suzana)/Tutorial
-    phylo R(SAlcantara).txt (as partes de uso básico ao `R` não serão
+    phylo R(SAlcantara).txt (as partes de uso básico do `R` não serão
     apresentadas aqui)
 
     -   Lista de pacotes que serão/poderão ser usados na disciplina:
@@ -317,7 +317,7 @@ utilizando phytools:
 
     cat(readLines("example1.nex"),sep="\n")
     #> #NEXUS
-    #> [R-package PHYTOOLS, Thu Oct  8 18:31:31 2020]
+    #> [R-package PHYTOOLS, Thu Oct  8 19:18:08 2020]
     #> 
     #> BEGIN TAXA;
     #>  DIMENSIONS NTAX = 5;
